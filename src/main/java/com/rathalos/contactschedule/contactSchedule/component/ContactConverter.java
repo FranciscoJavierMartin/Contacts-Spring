@@ -11,6 +11,7 @@ public class ContactConverter {
 	public Contact convertContactModel2Contact(ContactModel contactModel){
 		Contact contact =new Contact();
 		
+		contact.setId(contactModel.getId());
 		contact.setCity(contactModel.getCity());
 		contact.setFirstname(contactModel.getFirstname());
 		contact.setLastname(contactModel.getLastname());
@@ -22,6 +23,7 @@ public class ContactConverter {
 	public ContactModel convertContact2ContactModel(Contact contact){
 		ContactModel contactModel=new ContactModel();
 		
+		contactModel.setId(contact.getId());
 		contactModel.setCity(contact.getCity());
 		contactModel.setFirstname(contact.getFirstname());
 		contactModel.setLastname(contact.getLastname());

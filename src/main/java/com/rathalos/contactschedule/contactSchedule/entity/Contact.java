@@ -29,7 +29,8 @@ public class Contact {
 	
 	public Contact(){}
 
-	public Contact(String firstname, String lastname, String telephone, String city) {
+	public Contact(int id, String firstname, String lastname, String telephone, String city) {
+		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.telephone = telephone;
@@ -66,6 +67,14 @@ public class Contact {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
