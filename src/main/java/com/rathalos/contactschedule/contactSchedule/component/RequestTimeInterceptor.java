@@ -1,16 +1,28 @@
 package com.rathalos.contactschedule.contactSchedule.component;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import com.rathalos.contactschedule.contactSchedule.repository.LogRepository;
 
 @Component("requestTimeInterceptor")
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
+	@Autowired
+	@Qualifier("logRepository")
+	private LogRepository logRepository;
+	
 	private static final Log LOG = LogFactory.getLog(RequestTimeInterceptor.class);
 
 	@Override
@@ -27,7 +39,24 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 
 		long startTime = (long) request.getAttribute("startTime");
-		LOG.info("Url to: '" + request.getRequestURL().toString() + "' in '"
+		
+		String url=request.getRequestURL().toString();
+		
+		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		String username="";
+		String details="";
+		if(null!=auth&&auth.isAuthenticated()){
+			username=auth.getName();
+			details=auth.getDetails().toString();
+		}
+		
+		com.rathalos.contactschedule.contactSchedule.entity.Log log=
+				new com.rathalos.contactschedule.contactSchedule.entity.Log(new Date(),details,username,url);
+		
+		logRepository.save(log);
+		
+		
+		LOG.info("Url to: '" + url + "' in '"
 				+ (System.currentTimeMillis() - startTime)+"' ms");
 	}
 
